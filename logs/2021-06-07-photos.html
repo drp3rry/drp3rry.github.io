@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  
+  <title>Daniel Perry</title>
+   <link rel="preconnect" href="https://fonts.gstatic.com"> 
+   <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 
+   <link rel="stylesheet" href="/assets/css/styles.css">
+
+  
+</head>
+  <body>
+    <div class="container">
+      <page-title>
+    <a href="/"> daniel perry </a>
+        Building the photos page 
+</page-title>
+<header>
+      <nav>
+        <nav role="navigation">
+  	
+    	<a href="/" >Home</a> 
+  
+    	<a href="/about/" >About</a> 
+  
+    	<a href="/photos/" >Photos</a> 
+  
+    	<a href="/posts.html" >Posts</a> 
+  
+    	<a href="/resume.html" >Resume</a> 
+  
+</nav>
+
+
+      </nav>
+</header>
+
+      <main>
+        <h2>Building the photos page</h2>
+<h3>07 Jun 2021 - Testing and prototyping</h3>
+
+<p>This post outlines the process I went through to build the photos section of this site.</p>
+
+<h1 id="day-1">Day 1</h1>
+
+<h2 id="what-ive-been-inspired-by">What I’ve been inspired by</h2>
+<p>Most of this wasn’t exactly inspiring but it did give me some ideas for what I could do</p>
+<ul>
+  <li><a href="https://github.com/rbuchberger/jekyll_picture_tag]">rbuchbergers</a> responsive image loader</li>
+  <li><a href="https://chuckleplant.github.io">chuckleplant</a> has a really great jeykll album setup</li>
+  <li>The <a href="https://jekyllcodex.org/without-plugin/image-gallery/">Jekyll Codex</a> has a nice implementation of a simple image gallery</li>
+  <li><a href="https://github.com/michaelx/jekyll-photos">michaelxs</a> simple gallery</li>
+  <li><a href="https://freefrontend.com/css-gallery/">freefrontend.com</a> has a variety of different albums</li>
+</ul>
+
+<h2 id="what-i-want-to-build">What I want to build</h2>
+<p>Broadly, I want collections of photos to be organized like a set of blog posts, and haven’t decided what I want to do in the actual photo album. Most ideas are variations of:</p>
+<ul>
+  <li>Slide show style
+    <ul>
+      <li>Comes in 2 flavours, horizontal or vertical</li>
+      <li>Lets each image get its ‘moment’</li>
+      <li>Responsive slide-shows might not work well on mobile</li>
+    </ul>
+  </li>
+  <li>Gallery style
+    <ul>
+      <li>Lots of fancy options if desired</li>
+      <li>Might be boring</li>
+      <li>Images may be too small</li>
+    </ul>
+  </li>
+</ul>
+
+<p>I also want to make sure that each image present some metadata if selected (camera setting, location, title, description) and that brings me to an important criteria, the structure of the album files. So far this problem has several alternative solutions</p>
+<ul>
+  <li>Including the relevant meta-data in the front-matter of the markdown page</li>
+  <li>Make a separate .yaml file for each album with the relevant information</li>
+  <li>Parse exif tags in .jpg files</li>
+</ul>
+
+<p>Additionally I would like to maintain a site without the use of plugins or javascript, so ultimately would like a solution build entirely with liquid, css and html</p>
+
+<h2 id="what-i-actually-built">What I actually built</h2>
+
+<p>In the <a href="https://jekyllrb.com/docs/static-files/">jekyll docs</a> I found out how one could loop through all static files, including images. This let me create a simple list of all files using .</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;ul&gt;
+  {% for image in site.static_files %}
+    {% if image.path contains "geneva" %}
+      &lt;li&gt;
+        &lt;img src="{{ image.path }}" alt="image.name" width="100%"/&gt;
+      &lt;/li&gt;
+    {% endif %}
+{% endfor %}
+{% assign num = page.photos.size %}
+&lt;/ul&gt;
+</code></pre></div></div>
+
+<p>The next steps involved building the css to render the gallery, and parsing the exif data for each individual photo. I also need to figure out how to use liquid variables for the album path, for some reason it would only work with strings which doesn’t scale great.</p>
+
+<p>Seeing how slow the website took to load when I tested it from my iPhone, I may have to look into optimizing my photos. We’ll see.</p>
+
+<h1 id="day-2">Day 2</h1>
+
+<h2 id="new-inspirations">New inspirations</h2>
+<p>After reflecting on what I had, and after switching from my default browser (<a href="duckduckgo.com">duckduckgo</a>) to <a href="google.com">google</a> I ran into some new ways other people had already accomplished some of what I wanted…</p>
+<ul>
+  <li><a href="https://jimmyxiao.me/guides/technical/2019/07/28/folder-based-jekyll-lightgallery">jimmy xiao</a> also used <code class="language-plaintext highlighter-rouge">site.static_files</code> but may have solved my liquid variable problem, as well as better optimization courtesy of <a href="https://github.com/MattKevan/Jekyll-MiniMagick-new">jekll-minimagick-new</a> (plugins 😢)</li>
+  <li>If I’m using plugins might as well get exif data easily too… thank you <a href="https://github.com/benib/jekyll-exiftag">Beni Buess</a></li>
+</ul>
+
+<p>On to the actual galleries…</p>
+<ul>
+  <li>I liked the deliberate aspect of <a href="https://www.freecodecamp.org/news/how-to-create-an-image-gallery-with-css-grid-e0f0fd666a5c/">customizing each gallery</a> although I would want a way to avoid bloating my <code class="language-plaintext highlighter-rouge">stylesheet</code> with layouts for each individual album</li>
+</ul>
+
+<h2 id="fixing-what-i-had">Fixing what I had</h2>
+
+<p>My first goal was to find out what was causing my liquid issues. Turns out it was a simple syntax issue, you don’t need to include the curly braces when passing variables so I just had to change the line causing me trouble from</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% if image.path contains {{ page.folder }} %}
+</code></pre></div></div>
+
+<p>to</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% if image.path contains page.folder %}
+</code></pre></div></div>
+<p>}</p>
+
+<p>and everything worked. Currently this code is in the <code class="language-plaintext highlighter-rouge">_layouts/photo-album.html</code> file, but I may move it and make it an <code class="language-plaintext highlighter-rouge">/_include/</code> later on.</p>
+
+<h2 id="new-features">New features</h2>
+
+<h3 id="exif-metadata">Exif metadata</h3>
+
+<p>Every picture you take includes some <a href="https://en.wikipedia.org/wiki/Exif">exif</a> data that includes the camera information (model, focal length, aperture, shutter speed, exposure) and can be extended to include a title, caption and location. What I like is the portability, I can move my albums to another format and I don’t have to move jekyll liquid or <code class="language-plaintext highlighter-rouge">.yml</code> files too.</p>
+
+<p>I found several plugins that would allow me to extract the exif metadata:</p>
+<ul>
+  <li><a href="https://github.com/benib/jekyll-exiftag">benib</a></li>
+  <li><a href="https://github.com/NiklasEi/jekyll-exif-data">NiklasEi</a>
+who both use the gem <a href="https://github.com/remvee/exifr">remvee</a></li>
+</ul>
+
+<p>I started with <a href="https://github.com/benib/jekyll-exiftag">benib</a> but was frustrated with the lack of documentation, anmd upkeep in the last 6 years. I realized however that all I needed to fix was running <code class="language-plaintext highlighter-rouge">bundle update</code> before building and the plugin started to work.</p>
+
+<p>Later on I’ll work on building a workflow for including captions and title, right now I’ve stumbled on <a href="https://exiftool.org/#features">exiftool</a> which lets you write exif data from the command line</p>
+
+<h3 id="gallery">Gallery</h3>
+
+<p>I wanted to move onto building the gallery, for now I won’t bother with getting thumbnails for each image but may add that later.</p>
+
+<p>What I do want is a way to focus on an image and get it’s title, caption and camera info. I see two ways</p>
+<ol>
+  <li>Use <code class="language-plaintext highlighter-rouge">&lt;a href="path/to/image" &gt;</code> to give each photo a distinct page with the relevant information
+  -The images in the gallery can be smaller</li>
+  <li>Make use of <code class="language-plaintext highlighter-rouge">:hover</code> functionality to display the information upon hovering
+  -cleaner but the gallery needs to have larger imaged</li>
+</ol>
+
+<p>I’m leaning towards the second option, but we’ll see how this goes.</p>
+
+<h4 id="inspo-pages">Inspo pages</h4>
+<p>At this point I went back to the internet looking for what people have done in the past.</p>
+
+<ul>
+  <li><a href="https://github.com/haltakov/simple-photo-gallery">haltakov</a> built a gallery website generator
+    <ul>
+      <li>This isn’t very useful to my jekyll needs, but is a nice example of type 1 galleries</li>
+    </ul>
+  </li>
+  <li><a href="https://line25.com/tutorials/how-to-create-a-pure-css-polaroid-photo-gallery">line25</a> made a simple tutorial on quickly styling a list of photos
+    <ul>
+      <li>Could be a good MVP, easy to build</li>
+      <li>Doesn’t implement the exif features I want</li>
+    </ul>
+  </li>
+  <li><a href="https://css-tricks.com/seamless-responsive-photo-grid/">css-tricks</a> made a guide on a CSS ‘masonry’ tiled gallery
+    <ul>
+      <li>I like the potential for large photo sets, although I’m concerned that this favours portraits over landscapes</li>
+    </ul>
+  </li>
+</ul>
+
+<p>One research block i ran into was my desire to avoid having to rely on javascript, and my search results being filled with different forms of <strong>35 great CSS photo galleries</strong> which is not exactly where I wanted to start. When I moved beyond my java<em>phobia</em> I found interesting ideas, including examples of what I didn’t like (useful!)</p>
+
+<ul>
+  <li><a href="https://erickimphotography.com/blog/2020/12/17/my-interest-in-street-photography-philosophy-and-entrepreneurship/">Eric Kim</a> packages his photography with selling you on his entrepreneurship/motivation/philosophy books, but gave me some ideas for the future
+    <ul>
+      <li>I think two types of photo albums could be useful, one for purely a gallery of photos and another that tells a story.</li>
+    </ul>
+  </li>
+  <li><a href="https://blog.paulobizarro.com/?p=307#comment-151">PauloBizarro</a> has a simple setup
+    <ul>
+      <li>I like the write-up he includes for each set, but in terms of styling this is not what I’m looking for</li>
+    </ul>
+  </li>
+  <li><a href="https://www.flickr.com">flickr</a> was something I remember my Dad using 10 years ago. I hadn’t bothered to check it out aside from the occasional school project google image search leading me there.
+    <ul>
+      <li>I would describe my brief 90 seconds of browsing (not including having to create an account) as garbage</li>
+      <li>The slide-shows render pretty slowly and are pretty basic</li>
+      <li>Unrelated to my criteria but the social integration and advertisements are not fun</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="build-time">Build time</h4>
+
+<p>Not having decided exactly where I wanted to go, but getting bored of research I decided to start building.</p>
+
+<p>I thought any implementation was going to need some new CSS, and <a href="https://medium.com/@axel/mosaic-layouts-with-css-grid-d13f4e3ed2ae">this</a> medium post gave me a good place to start.</p>
+
+<p>My CSS is a mess right now, and will need to be cleaned up down the line, for now I’m just going to make a new grid setup for two selectors, <code class="language-plaintext highlighter-rouge">.image-gallery</code> and <code class="language-plaintext highlighter-rouge">.photo-box</code> and span photos on the resulting grid.</p>
+
+<p>Now I want to add in some hover functionality. For now just a photo title and a ‘focus’ feature. This ended up being a simple title overlay that displays on hover, and a neat effect where everything but the hovered image fades out.</p>
+
+<h1 id="wrap-up">Wrap up</h1>
+
+<p>For the time being I’m pretty happy with the set-up for now. I need to work on other parts of the site, but there are some features I would like to implement down the line in the photo section</p>
+<ul>
+  <li>Photo focus/slide-show that provides both the exif data and lets each image have a distinct url</li>
+  <li>Different layout for a story driven album (might just be something that becomes a post)</li>
+  <li>Preview photo for the directory (not sure I want this design-wise but maybe)</li>
+  <li>Optimization (will become important with large albums)</li>
+</ul>
+
+
+
+      </main>
+    </div>
+</body>
+</html>

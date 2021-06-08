@@ -1,0 +1,129 @@
+/*$primary-text-colour: ;*/
+/*
+// Colours
+
+$blue: #0076df !default;
+$red: #f95020 !default;
+$green: #00cf26 !default;
+$yellow: #efcc00 !default;
+$orange: #ffcc22 !default;
+$purple: #f92080 !default;
+$dark-blue: #00369f !default;
+$green: #00ab37 !default;
+$dark-green: #009f06 !default;
+$light-pink: #ffdddd !default;
+$light-green: #ddffdd !default;
+$dark-gray: #333 !default;
+$mid-gray: #777 !default;
+$light-gray: #ccc !default;
+$lighter-gray: #eee !default;
+$darken-1: rgba(#000,.0625) !default;
+$darken-2: rgba(#000,.125) !default;
+$darken-3: rgba(#000,.25) !default;
+$darken-4: rgba(#000,.5) !default;
+*/
+/* CSS for fonts, and basic styling as well as maybe special styles */
+@import url("https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Hind:wght@300;400;500;600;700&display=swap");
+html { margin: 0; font-family: -apple-system, BlinkMacSystemFont, San Francisco, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+h1 { font-family: "Futura", sans-serif; }
+
+h2 { font-family: "Futura", sans-serif; }
+
+h3 { font-family: "Futura", sans-serif; }
+
+h4 { font-family: "Futura", sans-serif; }
+
+p { font-family: -apple-system, BlinkMacSystemFont, San Francisco, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+a { text-decoration: none; color: red; }
+
+.container { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 5vh 5vh auto; }
+
+header { grid-column: 8 / span 5; grid-row: 1; background-color: white; align-self: center; }
+
+page-title { grid-column: 1/5; grid-row: 1; text-align: center; padding: 0; color: black; font-size: default; text-transform: lowercase; }
+
+page-title a { font-size: 2rem; color: black; }
+
+main { grid-column: 3/11; grid-row: 3; }
+
+.leftside { grid-row: 3; grid-column: 1; }
+
+.rightside { grid-row: 3; grid-column: 2/4; }
+
+@media screen and (max-width: 650px) { main { grid-column: 2/12; grid-row: 3; } header { grid-column: span 12; grid-row: 1; } page-title { grid-column: 6 / span 6; grid-row: 2; } }
+
+/*@import 'test';*/
+/*Layout variables 40px*/
+nav a, nav a.visited { margin: 0.5rem; text-decoration: none; text-transform: uppercase; color: black; background-color: white; font-family: "Helvetica", sans-serif; font-size: 1rem; font-weight: 500; letter-spacing: .05em; }
+
+nav a:hover, nav a.active { background-color: black; color: white; }
+
+section { display: flex; padding-top: 2.4rem; padding-bottom: 2.4rem; padding-left: .2rem; border-bottom: 0.1rem solid #fa5252; hyphens: auto; }
+
+.section-title { font-size: 1.6rem; text-align: left; min-width: 10rem; }
+
+.section-flex { display: flex; flex-wrap: wrap; }
+
+.block { margin-bottom: 2rem; }
+
+.block:last-child { margin-bottom: 0; }
+
+.block-square { width: 18rem; }
+
+.block-square:nth-last-child(2) { margin-bottom: 0; }
+
+.block-title { font-size: 1.2rem; margin-bottom: .4rem; font-weight: bold; }
+
+.block-subtitle { font-size: 1rem; margin-bottom: 1rem; color: #fa5252; }
+
+.block-content { font-size: 1rem; line-height: 1.5; }
+
+@media screen and (max-width: 48rem) { section { display: block; padding-top: 2rem; padding-bottom: 2rem; } .section-title { text-align: center; margin-bottom: 2rem; } .section-flex { display: block; } .block-square:nth-last-child(2) { margin-bottom: 2rem; } }
+
+.title-photo { position: fixed; }
+
+.title-photo img { border: 10px solid black; border-top-left-radius: 10%; border-bottom-right-radius: 10%; max-width: 30%; }
+
+.image-gallery { display: grid; grid-template-columns: repeat(6, 1fr); grid-gap: 1rem; }
+
+.photo-box { position: relative; transition: opacity 0.5s ease-out; }
+
+.photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+.photo-title { display: block; opacity: 0; transition: opacity .5s ease-out; position: absolute; bottom: 0; padding: 5px; background-color: #000; left: 0; right: 0; margin: 0; color: #fff; font-size: 12px; font-family: sans-serif; font-weight: 300; }
+
+.photo-box:nth-child(1) { grid-row: span 2; grid-column: span 4; }
+
+.photo-box:nth-child(2), .photo-box:nth-child(3) { grid-column: span 2; }
+
+.photo-box:nth-child(4), .photo-box:nth-child(5) { grid-column: span 3; }
+
+.photo-box:hover .photo-title { opacity: 0.8; }
+
+.image-gallery:hover > .photo-box { opacity: 0.5; }
+
+.image-gallery:hover > .photo-box:hover { opacity: 1; }
+
+@media screen and (max-width: 650px) { .image-gallery { display: block; } .photo-box { margin-bottom: 1rem; } }
+
+.feed-container { display: grid; grid-gap: 0.5rem; }
+
+.feed-container a { color: black; }
+
+.feed-block { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 5vh; position: relative; align-items: center; }
+
+.feed-title { grid-column: 1; grid-row: 1; }
+
+.feed-subtitle { grid-column: 1/4; grid-row: 1; justify-self: center; opacity: 0; font-size: 3vh; }
+
+.feed-date { grid-column: 3; grid-row: 1; justify-self: end; }
+
+.feed-block:hover { color: white; background-color: black; }
+
+.feed-block:hover .feed-subtitle { opacity: 1; }
+
+.feed-block:hover .feed-title, .feed-block:hover .feed-date { opacity: 0.5; }
+
+/*# sourceMappingURL=styles.css.map */
