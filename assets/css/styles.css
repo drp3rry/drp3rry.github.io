@@ -48,11 +48,15 @@ page-title a { font-size: 2rem; color: black; }
 
 main { grid-column: 3/11; grid-row: 3; }
 
-.leftside { grid-row: 3; grid-column: 1; }
+.leftside { grid-row: 3; grid-column: 1/4; }
 
-.rightside { grid-row: 3; grid-column: 2/4; }
+.rightside { grid-row: 3; grid-column: 5/13; }
 
-@media screen and (max-width: 650px) { main { grid-column: 2/12; grid-row: 3; } header { grid-column: span 12; grid-row: 1; } page-title { grid-column: 6 / span 6; grid-row: 2; } }
+.title-photo { position: fixed; }
+
+.title-photo img { border: 10px solid black; border-top-left-radius: 10%; border-bottom-right-radius: 10%; max-width: 30%; }
+
+@media screen and (max-width: 650px) { main { grid-column: 2/12; grid-row: 3; } header { grid-column: span 12; grid-row: 1; } page-title { grid-column: 6 / span 6; grid-row: 2; } .leftside { grid-column: 2/12; grid-row: auto; opacity: 0.5; } .rightside { grid-row: 3; grid-column: 2/12; } }
 
 /*@import 'test';*/
 /*Layout variables 40px*/
